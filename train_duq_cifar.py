@@ -1,5 +1,6 @@
 import argparse
 import json
+import pathlib
 import random
 
 import torch
@@ -51,7 +52,7 @@ def main(
         )  # Test time preprocessing for validation
 
     model = ResNet_DUQ(
-        input_size, num_classes, centroid_size, model_output_size, length_scale, gamma,
+        input_size, num_classes, centroid_size, model_output_size, length_scale, gamma
     )
     model = model.cuda()
 
@@ -316,5 +317,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     kwargs = vars(args)
     print("input args:\n", json.dumps(kwargs, indent=4, separators=(",", ":")))
+
+    pathlib.Path("saved_models").mkdir(exist_ok=True)
 
     main(**kwargs)

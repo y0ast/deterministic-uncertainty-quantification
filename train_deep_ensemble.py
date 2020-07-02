@@ -1,4 +1,5 @@
 import argparse
+import pathlib
 
 import torch
 import torch.nn as nn
@@ -170,6 +171,7 @@ def main():
 
         test(ensemble, test_loader, loss_fn)
 
+    pathlib.Path("saved_models").mkdir(exist_ok=True)
     path = f"saved_models/{args.dataset}_{len(ensemble)}"
     torch.save(ensemble.state_dict(), path + "_ensemble.pt")
 
