@@ -1,4 +1,4 @@
-# Deterministic Uncertainty Quantification
+# Deterministic Uncertainty Quantification (DUQ)
 
 This repo contains the code for [*Uncertainty Estimation Using a Single Deep Deterministic Neural Network*](https://arxiv.org/abs/2003.02037), which is accepted for publication at ICML 2020.
 
