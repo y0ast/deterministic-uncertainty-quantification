@@ -283,8 +283,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--l_gradient_penalty",
         type=float,
-        default=0,
-        help="Weight for gradient penalty (default: 0)",
+        default=0.5,
+        help="Weight for gradient penalty (default: 0.5)",
     )
 
     parser.add_argument(
