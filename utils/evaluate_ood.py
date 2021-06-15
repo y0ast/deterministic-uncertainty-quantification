@@ -12,6 +12,7 @@ from utils.datasets import (
 
 
 def prepare_ood_datasets(true_dataset, ood_dataset):
+    # Preprocess OoD dataset same as true dataset
     ood_dataset.transform = true_dataset.transform
 
     datasets = [true_dataset, ood_dataset]
@@ -23,7 +24,7 @@ def prepare_ood_datasets(true_dataset, ood_dataset):
     concat_datasets = torch.utils.data.ConcatDataset(datasets)
 
     dataloader = torch.utils.data.DataLoader(
-        concat_datasets, batch_size=500, shuffle=False, num_workers=6, pin_memory=False
+        concat_datasets, batch_size=500, shuffle=False, num_workers=4, pin_memory=False
     )
 
     return dataloader, anomaly_targets
@@ -39,7 +40,7 @@ def loop_over_dataloader(model, dataloader):
             data = data.cuda()
             target = target.cuda()
 
-            output = model(data)[1]
+            output = model(data)
             kernel_distance, pred = output.max(1)
 
             accuracy = pred.eq(target)
@@ -66,7 +67,7 @@ def get_auroc_ood(true_dataset, ood_dataset, model):
 
 def get_auroc_classification(dataset, model):
     dataloader = torch.utils.data.DataLoader(
-        dataset, batch_size=500, shuffle=False, num_workers=6, pin_memory=False
+        dataset, batch_size=500, shuffle=False, num_workers=4, pin_memory=False
     )
 
     scores, accuracies = loop_over_dataloader(model, dataloader)

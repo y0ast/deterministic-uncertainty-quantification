@@ -1,13 +1,13 @@
-name: environment
+name: duq
 channels:
     - pytorch
     - defaults
 dependencies:
-    - python
-    - pytorch=1.5.1
-    - torchvision=0.6.1
-    - cudatoolkit=10.1
-    - ignite=0.4.0
+    - python>=3.8
+    - pytorch=1.8.1
+    - torchvision=0.9.1
+    - cudatoolkit=10.2
+    - ignite=0.4.4
     - tqdm
     - tensorboard
     - numpy

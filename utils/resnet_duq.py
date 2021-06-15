@@ -1,12 +1,11 @@
 import torch
 import torch.nn as nn
-from torchvision import models
 
 
 class ResNet_DUQ(nn.Module):
     def __init__(
         self,
-        input_size,
+        feature_extractor,
         num_classes,
         centroid_size,
         model_output_size,
@@ -22,14 +21,7 @@ class ResNet_DUQ(nn.Module):
         )
         nn.init.kaiming_normal_(self.W, nonlinearity="relu")
 
-        self.resnet = models.resnet18(pretrained=False, num_classes=model_output_size)
-
-        # Adapted resnet from:
-        # https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py
-        self.resnet.conv1 = nn.Conv2d(
-            3, 64, kernel_size=3, stride=1, padding=1, bias=False
-        )
-        self.resnet.maxpool = nn.Identity()
+        self.feature_extractor = feature_extractor
 
         self.register_buffer("N", torch.zeros(num_classes) + 13)
         self.register_buffer(
@@ -52,7 +44,7 @@ class ResNet_DUQ(nn.Module):
     def update_embeddings(self, x, y):
         self.N = self.gamma * self.N + (1 - self.gamma) * y.sum(0)
 
-        z = self.resnet(x)
+        z = self.feature_extractor(x)
 
         z = torch.einsum("ij,mnj->imn", z, self.W)
         embedding_sum = torch.einsum("ijk,ik->jk", z, y)
@@ -60,7 +52,7 @@ class ResNet_DUQ(nn.Module):
         self.m = self.gamma * self.m + (1 - self.gamma) * embedding_sum
 
     def forward(self, x):
-        z = self.resnet(x)
+        z = self.feature_extractor(x)
         y_pred = self.rbf(z)
 
-        return z, y_pred
+        return y_pred

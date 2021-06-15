@@ -16,7 +16,7 @@ If the code or the paper has been useful in your research, please add a citation
 ## Dependencies
 
 The code is based on PyTorch and requires a few further dependencies, listed in [environment.yml](environment.yml).
-The code was tested with the versions specified in the environment file, but should work with newer versions as well.
+The code was tested with the versions specified in the environment file, but should work with newer versions as well (except for ignite=0.4.3).
 If you find an incompatibility, please let me know and I'll gladly update the code for the newest version of each library.
 
 ### Datasets
@@ -39,6 +39,7 @@ For both experiments, the paper's default are hardcoded and can be changed in pl
 
 The ResNet18 based CIFAR experiments are implemented in [train\_duq\_cifar.py](train_duq_cifar.py).
 All command line parameter defaults are as listed in the experimental details in Appendix A of the paper.
+We additionally include a Wide ResNet based architecture.
 
 For example: CIFAR-10 with gradient penalty with weight 0.5 and full training set:
 
@@ -47,10 +48,10 @@ python train_duq_cifar.py --final_model --l_gradient_penalty 0.5
 ```
 
 Note that ommitting `--final_model` will lead to 20\% of the training data to be used for validation, such that hyper parameter selection can be done in a responsible manner.
+The code also supports the Wide ResNet with `--architecture WRN`.
 
 I also include code for my implementation of Deep Ensembles.
 It's a very simple implementation that achieves good results (95\% accuracy in 75 epochs using 5 models).
-The code is based on [this script](https://gist.github.com/y0ast/d91d09565462125a1eb75acc65da1469) which is example code for training a single model on CIFAR-10.
 
 ```
 python train_deep_ensemble.py --dataset CIFAR10
