@@ -38,7 +38,6 @@ class Model(nn.Module):
 class CNN_DUQ(Model):
     def __init__(
         self,
-        input_size,
         num_classes,
         embedding_size,
         learnable_length_scale,
@@ -84,7 +83,7 @@ class CNN_DUQ(Model):
         embeddings = self.m / self.N.unsqueeze(0)
 
         diff = z - embeddings.unsqueeze(0)
-        distances = (-(diff ** 2)).mean(1).div(2 * self.sigma ** 2).exp()
+        distances = (-(diff**2)).mean(1).div(2 * self.sigma**2).exp()
 
         return distances
 
@@ -92,7 +91,7 @@ class CNN_DUQ(Model):
         z = self.last_layer(self.compute_features(x))
         y_pred = self.output_layer(z)
 
-        return z, y_pred
+        return y_pred
 
 
 class SoftmaxModel(Model):

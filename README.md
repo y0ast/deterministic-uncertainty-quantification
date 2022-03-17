@@ -27,7 +27,7 @@ Most datasets will be downloaded on the fly by Torchvision. Only NotMNIST needs 
 mkdir -p data && cd data && curl -O "http://yaroslavvb.com/upload/notMNIST/notMNIST_small.mat"
 ```
 
-FastFashionMNIST is based on [this script](https://gist.github.com/y0ast/f69966e308e549f013a92dc66debeeb4).
+FastFashionMNIST is based on [this code](https://github.com/y0ast/pytorch-snippets/tree/main/fast_mnist).
 The default Torchvision implementation first creates a PIL image (see [here](https://github.com/pytorch/vision/blob/v0.6.1/torchvision/datasets/mnist.py#L94)) which creates a CPU bottleneck (while training on GPU).
 The FastFashionMNIST class provides a significant speed up.
 

@@ -32,14 +32,12 @@ def train_model(l_gradient_penalty, length_scale, final_model):
         train_dataset = torch.utils.data.Subset(dataset, indices=idx[:55000])
         val_dataset = torch.utils.data.Subset(dataset, indices=idx[55000:])
 
-    input_size = 28
     num_classes = 10
     embedding_size = 256
     learnable_length_scale = False
     gamma = 0.999
 
     model = CNN_DUQ(
-        input_size,
         num_classes,
         embedding_size,
         learnable_length_scale,
@@ -94,7 +92,7 @@ def train_model(l_gradient_penalty, length_scale, final_model):
 
         x.requires_grad_(True)
 
-        z, y_pred = model(x)
+        y_pred = model(x)
 
         loss = F.binary_cross_entropy(y_pred, y)
         loss += l_gradient_penalty * calc_gradient_penalty(x, y_pred.sum(1))
@@ -120,7 +118,7 @@ def train_model(l_gradient_penalty, length_scale, final_model):
 
         x.requires_grad_(True)
 
-        z, y_pred = model(x)
+        y_pred = model(x)
 
         return y_pred, y, x, y_pred.sum(1)
 
@@ -161,8 +159,8 @@ def train_model(l_gradient_penalty, length_scale, final_model):
 
         if trainer.state.epoch % 5 == 0:
             evaluator.run(dl_val)
-            accuracy, roc_auc_mnist = get_fashionmnist_mnist_ood(model)
-            accuracy, roc_auc_notmnist = get_fashionmnist_notmnist_ood(model)
+            _, roc_auc_mnist = get_fashionmnist_mnist_ood(model)
+            _, roc_auc_notmnist = get_fashionmnist_notmnist_ood(model)
 
             metrics = evaluator.state.metrics
 
